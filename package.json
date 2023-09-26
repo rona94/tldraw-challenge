@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
+    "@tldraw/tldraw": "^2.0.0-alpha.14",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.18.54",
     "@types/react": "^18.2.22",
@@ -14,7 +15,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "webpack serve",
+    "dev": "webpack serve",
     "build": "webpack"
   },
   "eslintConfig": {

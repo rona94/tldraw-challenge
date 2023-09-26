@@ -10,11 +10,11 @@ npm install
 ## Development
 Start the app in local development environment. Run the project using this link: `http://localhost:8080/`
 ```
-npm start
+npm run dev
 ```
 
 ## Build
-Create a build
+Create a build inside `/dev/app` folder
 ```
 npm run build
 ```

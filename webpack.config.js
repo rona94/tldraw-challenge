@@ -5,8 +5,7 @@ module.exports = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: "development",
   output: {
-    path: path.resolve(__dirname, "build"),
-    
+    path: path.resolve(__dirname, "dist/app"),
   },
   module: {
     rules: [
@@ -27,12 +26,19 @@ module.exports = {
       {
         test:/\.(ico|png|svg|jpg|gif)$/,
         use:["file-loader"]
+      },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false,
+        },
+        use: []
       }
     ]
   },
   resolve: {
     modules: [__dirname, "src", "node_modules"],
-    extensions: ["*", ".js", ".jsx", ".tsx", ".ts"]
+    extensions: [".*", ".js", ".jsx", ".tsx", ".ts"]
   },
   plugins: [
     new HtmlWebpackPlugin({
