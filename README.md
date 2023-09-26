@@ -22,6 +22,6 @@ npm run build
 ```
 
 # Add Extension
-Generate zip files inside `/dist` folder. Import the generated zip file in `EXT` app.
+After running build, generate zip files inside `/dist` folder. Import the generated zip file in EXT app.
 
 see [Project Setup step 6](https://docs.ext.store/api-tutorial)
