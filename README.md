@@ -1,5 +1,7 @@
 # tldraw Extension
-tldraw is a collaborative digital whiteboard available at tldraw.com. 
+An extension for [Tldraw(https://github.com/tldraw/tldraw)] library.
+
+This extension is using version alpha 14.
 
 ## Installation
 Run to install all packages needed in this project.
@@ -14,7 +16,12 @@ npm run dev
 ```
 
 ## Build
-Create a build inside `/dev/app` folder
+Create a build inside `/dist/app` folder
 ```
 npm run build
 ```
+
+# Add Extension
+Generate zip files inside `/dist` folder. Import the generated zip file in `EXT` app.
+
+see [Project Setup step 6(https://docs.ext.store/api-tutorial)]

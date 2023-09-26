@@ -1,0 +1,32 @@
+{
+    "manifest_version": "ext-v1",
+    "name": "TLDraw",
+    "version": "1.0.0",
+    "version_name": "Initial",
+    "short_name": "tldraw",
+    "description": "TLDraw is a collaborative digital whiteboard.",
+    "author": "EXT, Inc",
+    "homepage_url": "https://ext.store",
+    "icons": {
+        "128": "icon-1024.png",
+        "banner": "icon-banner.png",
+        "background": "icon-background.png"
+    },
+    "scripts": [
+        "main.js"
+    ],
+    "modules": {
+        "console": {},
+        "runtime": {
+            "optional": false,
+            "permissions": [
+                "reload"
+            ]
+        },
+        "tabs": {},
+        "timers": {},
+        "windows": {},
+        "websessions": {},
+        "webviews": {}
+    }
+}
