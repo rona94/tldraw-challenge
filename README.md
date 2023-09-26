@@ -1,5 +1,5 @@
-# tldraw Extension
-An extension for [Tldraw(https://github.com/tldraw/tldraw)] library.
+# TLDraw Extension
+An extension for [TLDraw(https://github.com/tldraw/tldraw)] library.
 
 This extension is using version alpha 14.
 
