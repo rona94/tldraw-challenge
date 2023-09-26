@@ -1,5 +1,5 @@
 # TLDraw Extension
-An extension for [TLDraw(https://github.com/tldraw/tldraw)] library.
+An extension for [TLDraw](https://github.com/tldraw/tldraw) library.
 
 This extension is using version alpha 14.
 
@@ -24,4 +24,4 @@ npm run build
 # Add Extension
 Generate zip files inside `/dist` folder. Import the generated zip file in `EXT` app.
 
-see [Project Setup step 6(https://docs.ext.store/api-tutorial)]
+see [Project Setup step 6](https://docs.ext.store/api-tutorial)
