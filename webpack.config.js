@@ -28,11 +28,11 @@ module.exports = {
         use:["file-loader"]
       },
       {
-        test: /\.m?js/,
+        test: /\.(m?js)$/,
         resolve: {
           fullySpecified: false,
         },
-        use: []
+        use: ["source-map-loader"]
       }
     ]
   },
