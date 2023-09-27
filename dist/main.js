@@ -82,7 +82,8 @@ generateWebview = async (win, darkMode = 1, focus = false) => {
     })
 
     // load webview
-    const url = `./app/index.html?mode=${darkMode}&name=${win.title.replaceAll(' ', '').replaceAll('#', '')}-${win.id}-${persistenceArr[win.id]}`
+    const persistenceName = win.title.replaceAll(' ', '').replaceAll('#', '') +'-'+ win.id +'-'+ persistenceArr[win.id]
+    const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
     ext.webviews.loadURL(webviewOne.id, url)
 
     // focus on webview
