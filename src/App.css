@@ -6,3 +6,6 @@ div.tl-container {
 .tlui-debug-panel {
     display: none;
 }
+.tlui-menu__button[title="Dark mode"] {
+    display: none;
+}
