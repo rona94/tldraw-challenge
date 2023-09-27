@@ -21,7 +21,8 @@ function App() {
 
   return (
     <div style={{ position: 'fixed', inset: 0 }}>
-      <Tldraw onMount={editor => {
+      <Tldraw
+        onMount={editor => {
           editor.setDarkMode(arrs.mode == 1 || false)
         }}
         persistenceKey={arrs.name || ""}

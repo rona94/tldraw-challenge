@@ -1,6 +1,7 @@
 let tabsArr = []
 let windowsArr = []
 let webviewArr = []
+let persistenceArr = {}
 
 // listens for onExtensionClick events
 ext.runtime.onExtensionClick.addListener(async () => {
@@ -23,8 +24,13 @@ ext.runtime.onExtensionClick.addListener(async () => {
     tabsArr.push(tab)
     windowsArr.push(win)
 
+    // set to have unique persistent name
+    persistenceArr[win.id] = Math.random().toString(36).substring(2)
+
     // generate webview
-    generateWebview(win, 1, true)
+    const darkMode = await ext.windows.getPlatformDarkMode() ? 1 : 0
+    const webviewOne = generateWebview(win, darkMode, true)
+    webviewArr.push(webviewOne)
 })
 
 // listen for tab click event
@@ -56,17 +62,12 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
         return;
     }
 
-    // remove all webview
-    // change this start
-    webviewArr.forEach((webview) => {
-        ext.webviews.remove(webview.id)
-    })
-    webviewArr = []
-    // change this end
-
     // regenerate webview
-    windowsArr.forEach(async (win) => {
-        generateWebview(win, mode.enabled ? 1 : 0)
+    windowsArr.forEach((win, index) => {
+        const webviewOne = generateWebview(win, mode.enabled ? 1 : 0)
+
+        ext.webviews.remove(webviewArr[index].id) // remove old webview
+        webviewArr[index] = webviewOne // replace new webview in array
     })
 })
 
@@ -81,15 +82,15 @@ generateWebview = async (win, darkMode = 1, focus = false) => {
     })
 
     // load webview
-    const url = `./app/index.html?mode=${darkMode}&name=${win.title.replaceAll(' ', '').replaceAll('#', '')}-${win.id}`
-    await ext.webviews.loadURL(webviewOne.id, url)
+    const url = `./app/index.html?mode=${darkMode}&name=${win.title.replaceAll(' ', '').replaceAll('#', '')}-${win.id}-${persistenceArr[win.id]}`
+    ext.webviews.loadURL(webviewOne.id, url)
 
     // focus on webview
     if (focus) {
         ext.webviews.focus(webviewOne.id)
     }
 
-    webviewArr.push(webviewOne)
+    return webviewOne
 }
 
 // generate tab and window title
@@ -111,13 +112,9 @@ generateName = () => {
 
 // remove tab and window base on id
 removeTabWindow = async (tab) => {
-    // remove tab
+    // remove tab and window
     if (tab && tab.id) {
         await ext.tabs.remove(tab.id)
-    }
-    
-    // remove window
-    if (tab && tab.id) {
         await ext.windows.remove(tab.id)
     }
 
