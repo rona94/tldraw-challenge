@@ -1,7 +1,7 @@
 let tabsArr = []
 let windowsArr = []
 let webviewArr = []
-let persistenceArr = {}
+// let persistenceArr = {}
 let isContinue = true
 
 // listens for onExtensionClick events
@@ -34,7 +34,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
     tabsArr.push(tab)
     windowsArr.push(win)
 
-    persistenceArr[win.id] = Math.random().toString(36).substring(2) // set to have unique persistent name
+    // persistenceArr[win.id] = Math.random().toString(36).substring(2) // set to have unique persistent name
     const winSize = await ext.windows.getSize(win.id) // get window size
 
     // create webviews
@@ -44,7 +44,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
         autoResize: { width: true, height: true },
     })
     
-    await generateWebviewURL(webviewOne.id, win, darkMode) // load webview
+    await generateWebviewURL(webviewOne.id, win.title, darkMode) // load webview
     ext.webviews.focus(webviewOne.id) // focus on webview
     webviewArr.push(webviewOne)
     
@@ -97,13 +97,13 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
             icon: getWinIcon(darkMode)
         })
 
-        await generateWebviewURL(webviewOne.id, win, darkMode)
+        await generateWebviewURL(webviewOne.id, win.title, darkMode)
     })
 })
 
 // load webview URL
-generateWebviewURL = async (id, win, darkMode) => {
-    const persistenceName = win.title.replaceAll(' ', '').replaceAll('#', '') +'-'+ win.id +'-'+ persistenceArr[win.id]
+generateWebviewURL = async (id, name, darkMode) => {
+    const persistenceName = name.replaceAll(' ', '').replaceAll('#', '')
     const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
 
     await ext.webviews.loadURL(id, url)
