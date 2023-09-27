@@ -48,7 +48,7 @@ ext.runtime.onExtensionClick.addListener(async () => {
     await generateWebviewURL(webviewOne.id, win.title, darkMode) // load webview
     ext.webviews.focus(webviewOne.id) // focus on webview
     webviewArr.push(webviewOne)
-    
+
     isContinue = true
 })
 
@@ -108,6 +108,27 @@ generateWebviewURL = async (id, name, darkMode) => {
     const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
 
     await ext.webviews.loadURL(id, url)
+
+    // add EXT link in HELP menu
+    setTimeout(async () => {
+        await ext.webviews.executeJavaScript(id, `
+            var elems = document.querySelectorAll('.tlui-help-menu > button');
+            
+            var a = document.createElement('a');
+            a.href = 'https://ext.store/';
+            /* a.target = "_blank"; */
+            a.title = 'View EXT Store';
+            a.className = 'tlui-button tlui-button__normal tlui-menu__button';
+            
+            var text = document.createTextNode('View EXT Store');
+            a.appendChild(text);
+
+            elems[0].onclick = (e) => {
+                var grpElem = document.querySelectorAll('.tlui-menu__group');
+                grpElem[0].appendChild(a);
+            }
+        `);
+    }, 100)
 }
 
 // generate tab and window title
