@@ -10,7 +10,7 @@ npm install
 ```
 
 ## Development
-Start the app in local development environment. Run the project using this link: `http://localhost:8080/`
+Start the app in local development environment. You can open the project using this link: `http://localhost:8080/`
 ```
 npm run dev
 ```
