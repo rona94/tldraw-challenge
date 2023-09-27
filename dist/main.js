@@ -15,11 +15,8 @@ ext.runtime.onExtensionClick.addListener(async () => {
 
     isContinue = false
 
-    // get dark mode
-    const darkMode = await ext.windows.getPlatformDarkMode() ? 1 : 0
-    
-    // generate tab and window name
-    const tabTitle = generateName()
+    const darkMode = await ext.windows.getPlatformDarkMode() ? 1 : 0 // get dark mode
+    const tabTitle = generateName() // generate tab and window name
 
     // create tab
     const tab = await ext.tabs.create({
@@ -37,13 +34,20 @@ ext.runtime.onExtensionClick.addListener(async () => {
     tabsArr.push(tab)
     windowsArr.push(win)
 
-    // set to have unique persistent name
-    persistenceArr[win.id] = Math.random().toString(36).substring(2)
+    persistenceArr[win.id] = Math.random().toString(36).substring(2) // set to have unique persistent name
+    const winSize = await ext.windows.getSize(win.id) // get window size
 
-    // generate webview
-    const webviewOne = await generateWebview(win, darkMode, true)
+    // create webviews
+    const webviewOne = await ext.webviews.create({
+        window: win,
+        bounds: { x: 0, y: 0, width: winSize.width - 15, height: winSize.height - 35 },
+        autoResize: { width: true, height: true },
+    })
+    
+    await generateWebviewURL(webviewOne.id, win, darkMode) // load webview
+    ext.webviews.focus(webviewOne.id) // focus on webview
     webviewArr.push(webviewOne)
-
+    
     isContinue = true
 })
 
@@ -73,54 +77,36 @@ ext.windows.onClosed.addListener((_event, tab) => {
 ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
     console.log('Update Theme Mode')
 
-    if (tabsArr.length == 0 || webviewArr == 0) {
+    if (webviewArr.length == 0) {
         return;
     }
-
-    // regenerate webview
-    const windowIds = []
-    const darkMode = mode.enabled ? 1 : 0;
-    windowsArr.forEach((win, index) => {
-        windowIds.push(win.id)
-
-        const webviewOne = generateWebview(win, darkMode)
-
-        ext.webviews.remove(webviewArr[index].id) // remove old webview
-        webviewArr[index] = webviewOne // replace new webview in array
-    })
-
-    // update window
-    ext.windows.update(windowIds, {
-        icon: getWinIcon(darkMode)
-    })
     
-    // update tabs
-    ext.tabs.update(windowIds, {
-        icon: getWinIcon(darkMode)
+    const darkMode = mode.enabled ? 1 : 0;
+    
+    // reset loadURL
+    webviewArr.forEach(async (webviewOne, index) => {
+        const win = windowsArr[index]
+        
+        // update window
+        ext.windows.update(win.id, {
+            icon: getWinIcon(darkMode)
+        })
+        
+        // update tabs
+        ext.tabs.update(win.id, {
+            icon: getWinIcon(darkMode)
+        })
+
+        await generateWebviewURL(webviewOne.id, win, darkMode)
     })
 })
 
-// generate webview
-generateWebview = async (win, darkMode = 1, focus = false) => {
-    const winSize = await ext.windows.getSize(win.id)
-
-    const webviewOne = await ext.webviews.create({
-        window: win,
-        bounds: { x: 0, y: 0, width: winSize.width - 15, height: winSize.height - 35 },
-        autoResize: { width: true, height: true },
-    })
-
-    // load webview
+// load webview URL
+generateWebviewURL = async (id, win, darkMode) => {
     const persistenceName = win.title.replaceAll(' ', '').replaceAll('#', '') +'-'+ win.id +'-'+ persistenceArr[win.id]
     const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
-    ext.webviews.loadURL(webviewOne.id, url)
 
-    // focus on webview
-    if (focus) {
-        ext.webviews.focus(webviewOne.id)
-    }
-
-    return webviewOne
+    await ext.webviews.loadURL(id, url)
 }
 
 // generate tab and window title
@@ -140,12 +126,13 @@ generateName = () => {
     return 'TLDraw - #'+currNum
 }
 
-// remove tab and window base on id
+// remove tab, window and webview base on id
 removeTabWindow = async (tab) => {
-    // remove tab and window
+    // remove tab, window and webview
     if (tab && tab.id) {
         await ext.tabs.remove(tab.id)
         await ext.windows.remove(tab.id)
+        await ext.webviews.remove(tab.id)
     }
 
     // remove from array
@@ -154,6 +141,10 @@ removeTabWindow = async (tab) => {
     })
 
     windowsArr = windowsArr.filter((value) => {
+        return tab.id !== value.id
+    })
+
+    webviewArr = webviewArr.filter((value) => {
         return tab.id !== value.id
     })
 }
