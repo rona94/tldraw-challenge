@@ -1,8 +1,7 @@
+/* tldraw */
 div.tl-container {
-    height: 100vh;
-}
-.tlui-menu__button[title="Dark Mode"] {
-    display: none;
+    height: calc(100vh - 40px);
+    width: calc(100vw - 15px);
 }
 .tlui-debug-panel {
     display: none;

@@ -40,7 +40,8 @@ ext.runtime.onExtensionClick.addListener(async () => {
     // create webviews
     const webviewOne = await ext.webviews.create({
         window: win,
-        bounds: { x: 0, y: 0, width: winSize.width - 15, height: winSize.height - 35 },
+        bounds: { x: 0, y: 0, width: winSize.width, height: winSize.height },
+        // bounds: { x: 0, y: 0, width: winSize.width - 15, height: winSize.height - 40 },
         autoResize: { width: true, height: true },
     })
     
