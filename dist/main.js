@@ -78,22 +78,25 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
     }
 
     // regenerate webview
+    const windowIds = []
     const darkMode = mode.enabled ? 1 : 0;
     windowsArr.forEach((win, index) => {
-        // update window
-        ext.windows.update(win.id, {
-            icon: getWinIcon(darkMode)
-        })
-        
-        // update tabs
-        ext.tabs.update(win.id, {
-            icon: getWinIcon(darkMode)
-        })
+        windowIds.push(win.id)
 
         const webviewOne = generateWebview(win, darkMode)
 
         ext.webviews.remove(webviewArr[index].id) // remove old webview
         webviewArr[index] = webviewOne // replace new webview in array
+    })
+
+    // update window
+    ext.windows.update(windowIds, {
+        icon: getWinIcon(darkMode)
+    })
+    
+    // update tabs
+    ext.tabs.update(windowIds, {
+        icon: getWinIcon(darkMode)
     })
 })
 
