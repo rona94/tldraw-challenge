@@ -8,9 +8,12 @@
     "author": "EXT, Inc",
     "homepage_url": "https://ext.store",
     "icons": {
-        "128": "icon-1024.png",
+        "128": "icon.png",
+        "128-dark": "icon-dark.png",
         "banner": "icon-banner.png",
-        "background": "icon-background.png"
+        "banner-dark": "icon-banner-dark.png",
+        "background": "icon-background.png",
+        "background-dark": "icon-background-dark.png"
     },
     "scripts": [
         "main.js"

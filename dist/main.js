@@ -2,22 +2,35 @@ let tabsArr = []
 let windowsArr = []
 let webviewArr = []
 let persistenceArr = {}
+let isContinue = true
 
 // listens for onExtensionClick events
 ext.runtime.onExtensionClick.addListener(async () => {
     console.log('Extension Clicked')
+
+    // prevent continue if not yet done all codes on this function
+    if (!isContinue) {
+        return
+    }
+
+    isContinue = false
+
+    // get dark mode
+    const darkMode = await ext.windows.getPlatformDarkMode() ? 1 : 0
     
     // generate tab and window name
     const tabTitle = generateName()
 
     // create tab
     const tab = await ext.tabs.create({
-        text: tabTitle
+        text: tabTitle,
+        icon: getWinIcon(darkMode),
     })
     
     // create window
     const win = await ext.windows.create({
         title: tabTitle,
+        icon: getWinIcon(darkMode),
     })
 
     // push in array
@@ -28,9 +41,10 @@ ext.runtime.onExtensionClick.addListener(async () => {
     persistenceArr[win.id] = Math.random().toString(36).substring(2)
 
     // generate webview
-    const darkMode = await ext.windows.getPlatformDarkMode() ? 1 : 0
-    const webviewOne = generateWebview(win, darkMode, true)
+    const webviewOne = await generateWebview(win, darkMode, true)
     webviewArr.push(webviewOne)
+
+    isContinue = true
 })
 
 // listen for tab click event
@@ -55,6 +69,7 @@ ext.windows.onClosed.addListener((_event, tab) => {
     removeTabWindow(_event)
 })
 
+// listen on dark mode update
 ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
     console.log('Update Theme Mode')
 
@@ -63,8 +78,19 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
     }
 
     // regenerate webview
+    const darkMode = mode.enabled ? 1 : 0;
     windowsArr.forEach((win, index) => {
-        const webviewOne = generateWebview(win, mode.enabled ? 1 : 0)
+        // update window
+        ext.windows.update(win.id, {
+            icon: getWinIcon(darkMode)
+        })
+        
+        // update tabs
+        ext.tabs.update(win.id, {
+            icon: getWinIcon(darkMode)
+        })
+
+        const webviewOne = generateWebview(win, darkMode)
 
         ext.webviews.remove(webviewArr[index].id) // remove old webview
         webviewArr[index] = webviewOne // replace new webview in array
@@ -127,4 +153,9 @@ removeTabWindow = async (tab) => {
     windowsArr = windowsArr.filter((value) => {
         return tab.id !== value.id
     })
+}
+
+// get icon
+getWinIcon = (darkMode) => {
+    return darkMode == 1 ? 'icon-dark.png' : 'icon.png'
 }
