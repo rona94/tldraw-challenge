@@ -106,7 +106,7 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
 generateWebviewURL = async (id, name, darkMode) => {
     const persistenceName = name.replaceAll(' ', '').replaceAll('#', '')
     const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
-
+    
     await ext.webviews.loadURL(id, url)
 
     // add EXT link in HELP menu
@@ -128,7 +128,7 @@ generateWebviewURL = async (id, name, darkMode) => {
                 grpElem[0].appendChild(a);
             }
         `);
-    }, 100)
+    }, 500)
 }
 
 // generate tab and window title
