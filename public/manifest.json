@@ -29,7 +29,10 @@
         "tabs": {},
         "timers": {},
         "windows": {},
-        "websessions": {},
+        "websessions": {
+            "permissions": ["*"],
+			"module_version": "1.0.1"
+        },
         "webviews": {}
     }
 }

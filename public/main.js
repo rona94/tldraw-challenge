@@ -1,6 +1,7 @@
 let tabsArr = []
 let windowsArr = []
 let webviewArr = []
+let websessionArr = []
 // let persistenceArr = {}
 let isContinue = true
 
@@ -34,12 +35,23 @@ ext.runtime.onExtensionClick.addListener(async () => {
     tabsArr.push(tab)
     windowsArr.push(win)
 
+    // create the websession
+    const myWebsession = await ext.websessions.create({ 
+        partition: win.title,
+        persistent: true,
+        global: false,
+        cache: true
+    })
+
+    websessionArr.push(myWebsession)
+
     // persistenceArr[win.id] = Math.random().toString(36).substring(2) // set to have unique persistent name
     const winSize = await ext.windows.getSize(win.id) // get window size
 
     // create webviews
     const webviewOne = await ext.webviews.create({
         window: win,
+        websession: myWebsession,
         bounds: { x: 0, y: 0, width: winSize.width, height: winSize.height },
         // bounds: { x: 0, y: 0, width: winSize.width - 15, height: winSize.height - 40 },
         autoResize: { width: true, height: true },
@@ -148,13 +160,14 @@ generateName = () => {
     return 'TLDraw - #'+currNum
 }
 
-// remove tab, window and webview base on id
+// remove tab, window, webview and session base on id
 removeTabWindow = async (tab) => {
-    // remove tab, window and webview
+    // remove tab, window, webview and session
     if (tab && tab.id) {
         await ext.tabs.remove(tab.id)
         await ext.windows.remove(tab.id)
         await ext.webviews.remove(tab.id)
+        await ext.websessions.remove(tab.id)
     }
 
     // remove from array
@@ -167,6 +180,10 @@ removeTabWindow = async (tab) => {
     })
 
     webviewArr = webviewArr.filter((value) => {
+        return tab.id !== value.id
+    })
+
+    websessionArr = websessionArr.filter((value) => {
         return tab.id !== value.id
     })
 }
