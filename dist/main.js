@@ -105,7 +105,7 @@ ext.windows.onUpdatedDarkMode.addListener((_event, mode) => {
 // load webview URL
 generateWebviewURL = async (id, name, darkMode) => {
     const persistenceName = name.replaceAll(' ', '').replaceAll('#', '')
-    const url = `./app/index.html?mode=${darkMode}&name=${persistenceName}`
+    const url = `./index.html?mode=${darkMode}&name=${persistenceName}`
     
     await ext.webviews.loadURL(id, url)
 

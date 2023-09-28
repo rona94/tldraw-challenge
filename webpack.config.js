@@ -1,11 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyPlugin = require("copy-webpack-plugin");
 
 module.exports = {
   entry: path.join(__dirname, "src", "index.tsx"),
   mode: "development",
   output: {
-    path: path.resolve(__dirname, "dist/app"),
+    path: path.resolve(__dirname, "dist"),
+    filename: "bundle.js"
   },
   module: {
     rules: [
@@ -43,6 +45,19 @@ module.exports = {
   plugins: [
     new HtmlWebpackPlugin({
       template: path.join(__dirname, "public", "index.html"),
+      filename: 'index.html',
+    }),
+    new CopyPlugin({
+      patterns: [
+        { from: "public/manifest.json" },
+        { from: "public/main.js" },
+        { from: "public/icon.png" },
+        { from: "public/icon-dark.png" },
+        { from: "public/icon-banner.png" },
+        { from: "public/icon-banner-dark.png" },
+        { from: "public/icon-background.png" },
+        { from: "public/icon-background-dark.png" },
+      ],
     }),
   ],
 }

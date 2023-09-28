@@ -16,7 +16,7 @@ npm run dev
 ```
 
 ## Build
-Create a build inside `/dist/app` folder
+Run to create a build inside `/dist` folder
 ```
 npm run build
 ```

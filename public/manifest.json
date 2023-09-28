@@ -1,25 +1,35 @@
 {
-  "short_name": "Tldraw",
-  "name": "Tldraw is a collaborative digital whiteboard",
-  "icons": [
-    {
-      "src": "favicon.ico",
-      "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+    "manifest_version": "ext-v1",
+    "name": "TLDraw",
+    "version": "1.0.0",
+    "version_name": "Initial",
+    "short_name": "tldraw",
+    "description": "TLDraw is a collaborative digital whiteboard.",
+    "author": "EXT, Inc",
+    "homepage_url": "https://ext.store",
+    "icons": {
+        "128": "icon.png",
+        "128-dark": "icon-dark.png",
+        "banner": "icon-banner.png",
+        "banner-dark": "icon-banner-dark.png",
+        "background": "icon-background.png",
+        "background-dark": "icon-background-dark.png"
     },
-    {
-      "src": "logo192.png",
-      "type": "image/png",
-      "sizes": "192x192"
-    },
-    {
-      "src": "logo512.png",
-      "type": "image/png",
-      "sizes": "512x512"
+    "scripts": [
+        "main.js"
+    ],
+    "modules": {
+        "console": {},
+        "runtime": {
+            "optional": false,
+            "permissions": [
+                "reload"
+            ]
+        },
+        "tabs": {},
+        "timers": {},
+        "windows": {},
+        "websessions": {},
+        "webviews": {}
     }
-  ],
-  "start_url": ".",
-  "display": "standalone",
-  "theme_color": "#000000",
-  "background_color": "#ffffff"
 }
