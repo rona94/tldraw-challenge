@@ -8,13 +8,11 @@ interface App {
 }
 
 function App() {
-  
-
   const [oldKey, setOldKey] = useState('')
   const [darkMode, setDarkMode] = useState('')
   const [settings, setSettings] = useState({mode: null, name: null})
 
-  const test = () => {
+  const onLoad = () => {
     const path = window.location.search.substring(1).split('&')
     let arrs:any = {};
 
@@ -61,7 +59,7 @@ function App() {
   }
 
   useEffect(() => {
-    test()
+    onLoad()
   }, [])
 
   useEffect(() => {
