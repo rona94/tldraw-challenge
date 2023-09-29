@@ -3,10 +3,6 @@ import { Tldraw, getDefaultColorTheme } from '@tldraw/tldraw'
 import '@tldraw/tldraw/tldraw.css'
 import './App.css'
 
-interface App {
-  mode: boolean
-}
-
 function App() {
   const [oldKey, setOldKey] = useState('')
   const [settings, setSettings] = useState({mode: null, name: null})
