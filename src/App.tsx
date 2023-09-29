@@ -9,7 +9,6 @@ interface App {
 
 function App() {
   const [oldKey, setOldKey] = useState('')
-  const [darkMode, setDarkMode] = useState('')
   const [settings, setSettings] = useState({mode: null, name: null})
 
   const onLoad = () => {
@@ -25,7 +24,6 @@ function App() {
     })
 
     setSettings(arrs)
-    setDarkMode(arrs.mode == 1 ? 'dark' : 'light')
   }
 
   const handleKeyDown = (e:any) => {
@@ -35,6 +33,8 @@ function App() {
       setOldKey(newKey)
     }
     else if (oldKey != newKey && newKey == '/') { // do on ctrl + / click
+      const darkMode = settings.mode == 1 ? 'dark' : 'light'
+
       // assign default theme mode in container class
       var container:any = document.querySelectorAll('.tl-container')
       container[0].classList.remove('tl-theme__light')
